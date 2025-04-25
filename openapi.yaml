@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: CSV Data API
+  description: API for retrieving CSV data from MongoDB
+  version: 1.0.0
+servers:
+  - url: https://get-csv-data.onrender.com
+    description: Local development server
+paths:
+  /api/csv-data:
+    get:
+      summary: Retrieve all CSV data
+      description: Returns CSV data stored in the MongoDB database
+      operationId: getCsvData
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CsvDataResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    CsvDataResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        count:
+          type: integer
+          description: Number of data records returned
+          example: 5
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CsvDataEntry"
+    CsvDataEntry:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d21b4667d0d8992e610c85"
+        DocumentNo:
+          type: string
+          example: "DOC-001"
+        Entry Date:
+          type: string
+          format: date
+          example: "2023-01-15"
+        User name:
+          type: string
+          example: "John Doe"
+        Customer ID-Name:
+          type: string
+          example: "CUST-001-ABC Company"
+        Key Account Number-Name:
+          type: string
+          example: "ACC-123-XYZ Enterprise"
+        Amount In AED:
+          type: number
+          example: 1500.50
+        Amount:
+          type: number
+          example: 1500.50
+        Analysis:
+          type: string
+          example: "Payment received"
+      additionalProperties: true
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "Server error"
+        message:
+          type: string
+          example: "Error connecting to database"
